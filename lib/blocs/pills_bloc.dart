@@ -16,6 +16,9 @@ class PillsBloc {
   Stream<String> get eventDescription => _description.stream;
   Stream<bool> get eventIsActive => _isActive.stream;
   Stream<bool> get eventSaved => _eventSaved.stream;
+  // ToDo - get event from db
+  Future<PillsEvent> fetchEvent(String eventId) => events.first.then((mylist) =>
+      mylist.firstWhere((element) => element.id.toString() == eventId));
   //Future<PillsEvent> fetchEvent(String eventId) => db.fetchEvent(eventId);
 
   // Setters
