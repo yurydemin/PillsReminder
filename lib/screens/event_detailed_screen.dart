@@ -17,25 +17,33 @@ class _EventDetailedScreenState extends State<EventDetailedScreen> {
   String _hour, _minute, _time;
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
-  TextEditingController _timeController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  // TextEditingController _timeController = TextEditingController();
+  // TextEditingController _descriptionController = TextEditingController();
 
   Future<Null> _selectTime(BuildContext context) async {
+    final bloc = Provider.of<EventsBloc>(context, listen: false);
     final TimeOfDay picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
     );
-    if (picked != null)
-      setState(() {
-        selectedTime = picked;
-        _hour = selectedTime.hour.toString();
-        _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
-        _timeController.text = _time;
-        _timeController.text = formatDate(
-            DateTime(2021, 01, 1, selectedTime.hour, selectedTime.minute),
-            [hh, ':', nn, " ", am]).toString();
-      });
+    if (picked != null) {
+      selectedTime = picked;
+      _hour = selectedTime.hour.toString();
+      _minute = selectedTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+      bloc.changeEventTime(_time);
+      setState(() {});
+      // setState(() {
+      //   selectedTime = picked;
+      //   _hour = selectedTime.hour.toString();
+      //   _minute = selectedTime.minute.toString();
+      //   _time = _hour + ' : ' + _minute;
+      //   _timeController.text = _time;
+      //   _timeController.text = formatDate(
+      //       DateTime(2021, 01, 1, selectedTime.hour, selectedTime.minute),
+      //       [hh, ':', nn, " ", am]).toString();
+      // });
+    }
   }
 
   @override
@@ -59,8 +67,8 @@ class _EventDetailedScreenState extends State<EventDetailedScreen> {
 
   @override
   void dispose() {
-    _timeController.dispose();
-    _descriptionController.dispose();
+    // _timeController.dispose();
+    // _descriptionController.dispose();
     super.dispose();
   }
 
@@ -90,10 +98,10 @@ class _EventDetailedScreenState extends State<EventDetailedScreen> {
 
         var scaffoldTitle =
             (selectedEvent == null) ? 'Add new event' : 'Edit event';
-        _descriptionController.text =
-            (selectedEvent == null) ? null : selectedEvent.description;
-        _timeController.text =
-            (selectedEvent == null) ? null : selectedEvent.timeOfDay;
+        // _descriptionController.text =
+        //     (selectedEvent == null) ? null : selectedEvent.description;
+        // _timeController.text =
+        //     (selectedEvent == null) ? null : selectedEvent.timeOfDay;
 
         return Scaffold(
           appBar: AppBar(
@@ -114,8 +122,11 @@ class _EventDetailedScreenState extends State<EventDetailedScreen> {
                   return TextFormField(
                     decoration: InputDecoration(hintText: 'Event description'),
                     keyboardType: TextInputType.text,
-                    controller: _descriptionController,
-                    onChanged: bloc.changeEventDescription,
+                    //controller: _descriptionController,
+                    initialValue: snapshot.data,
+                    onChanged: (value) {
+                      bloc.changeEventDescription(value);
+                    },
                   );
                 },
               ),
@@ -127,12 +138,15 @@ class _EventDetailedScreenState extends State<EventDetailedScreen> {
                       _selectTime(context);
                     },
                     child: TextFormField(
-                      onChanged: bloc.changeEventTime,
+                      // onChanged: (value) {
+                      //   bloc.changeEventTime(value);
+                      // },
+                      initialValue: snapshot.data,
                       style: TextStyle(fontSize: 18),
                       textAlign: TextAlign.center,
                       enabled: false,
                       keyboardType: TextInputType.text,
-                      controller: _timeController,
+                      //controller: _timeController,
                       decoration: InputDecoration(
                           disabledBorder:
                               UnderlineInputBorder(borderSide: BorderSide.none),

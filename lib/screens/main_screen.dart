@@ -20,28 +20,34 @@ class MainScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Container();
           var events = snapshot.data;
-          return ListView.builder(
-            itemCount: snapshot.data.length,
-            itemBuilder: (context, index) {
-              // events[index].activate();
-              // bloc.changeEvents(events);
-              return ListTile(
-                leading: CircleAvatar(
-                  child: Icon(Icons.bookmark),
-                ),
-                title: Text(events[index].timeOfDay),
-                subtitle: Text(events[index].description),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => EventDetailedScreen(
-                        eventId: events[index].id.toString(),
+          return Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                  itemCount: events.length,
+                  itemBuilder: (context, index) {
+                    // events[index].activate();
+                    // bloc.changeEvents(events);
+                    return ListTile(
+                      leading: CircleAvatar(
+                        child: Icon(Icons.bookmark),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
+                      title: Text(events[index].timeOfDay),
+                      subtitle: Text(events[index].description),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EventDetailedScreen(
+                              eventId: events[index].id.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
