@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pills_reminder/blocs/events_bloc.dart';
 import 'package:pills_reminder/models/pills_event.dart';
-import 'package:pills_reminder/providers/pills_provider.dart';
 import 'package:pills_reminder/screens/event_detailed_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +9,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = Provider.of<PillsProvider>(context).bloc;
+    final bloc = Provider.of<EventsBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Pills Reminder'),

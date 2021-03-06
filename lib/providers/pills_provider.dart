@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:pills_reminder/blocs/pills_bloc.dart';
+import 'package:pills_reminder/blocs/events_bloc.dart';
 
 class PillsProvider with ChangeNotifier {
-  PillsBloc _bloc;
-  PillsBloc get bloc => _bloc;
+  EventsBloc _bloc;
+  EventsBloc get bloc => _bloc;
 
   PillsProvider() {
-    _bloc = PillsBloc();
+    _bloc = EventsBloc();
   }
 }
